@@ -24,5 +24,8 @@ bundle:
 deploy-sample:
 	cd sample/adder && make build && racetrack deploy .
 
+test-sample:
+	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" http://127.0.0.1:7105/pub/job/tomcat-adder/0.0.3/api/v1/perform
+
 install:
 	racetrack plugin install *.zip

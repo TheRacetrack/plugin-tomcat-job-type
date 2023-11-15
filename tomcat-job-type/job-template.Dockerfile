@@ -11,17 +11,9 @@ RUN apk add \
 
 RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
 
-# Todo: run gradle builder to get a .war file out of user .java
-
-# Todo: separate Health from Perform servlet
-# health war will serve /health, /live and /ready , both on root and on pub/ endpoint.
-# Potential problem is that user war also needs to be run on the same path.
-#ADD health.war "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
-
-# Add the user war file , put it at path which will specify the servlet path, plus at root / for debugging
+# Add the user war file, put it at path which will specify the servlet path.
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war
 # it will be made available under the demo/v1/myfeature context."
-ADD "{{ manifest.get_jobtype_extra().entrypoint_path }}" "${CATALINA_HOME}/webapps/ROOT.war"
 ADD "{{ manifest.get_jobtype_extra().entrypoint_path }}" "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}.war"
 
 # The CMD for this image is specified in base tomcat image. It is sth like CMD ["catalina.sh", "run"]
