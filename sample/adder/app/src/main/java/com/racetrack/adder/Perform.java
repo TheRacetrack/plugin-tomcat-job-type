@@ -12,18 +12,18 @@ import java.io.IOException;
 public class Perform extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public Perform() {
-        super();
-    }
+	public Perform() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String path = request.getServletPath();
 
-        if (path.equals("/docs_input_example")) {
-        	response.getWriter().append("TODO should call user code");
-        }
+		if (path.equals("/docs_input_example")) {
+			response.getWriter().append("TODO should call user code");
+		}
 	}
 
 

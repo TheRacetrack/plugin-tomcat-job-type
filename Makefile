@@ -1,15 +1,4 @@
-TAG ?= 0.0.1
-
-# runs the tomcat directly on host
-run:
-	cd tomcat-job-type/tomcat_wrapper &&\
-	JOB_NAME=tomcat-function JOB_VERSION=${TAG} java run . # todo
-
-perform:
-	curl -X POST \
-		"http://localhost:7000/pub/job/tomcat-adder/latest/api/v1/perform" \
-		-H "Content-Type: application/json" \
-		-d '{"numbers": [40, 2]}'
+TAG ?= 0.0.2
 
 build:
 	cd tomcat-job-type &&\
@@ -18,14 +7,24 @@ build:
 		-f base.Dockerfile .
 
 bundle:
-	cd tomcat-job-type &&\
+	cd tomcat-job-type && \
+	make build && \
 	racetrack plugin bundle --plugin-version=${TAG} --out=..
+
+install:
+	racetrack plugin install *.zip
 
 deploy-sample:
 	cd sample/adder && make build && racetrack deploy .
 
 test-sample:
-	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" http://127.0.0.1:7105/pub/job/tomcat-adder/0.0.3/api/v1/perform
+	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
+		http://127.0.0.1:7105/pub/job/tomcat-adder/0.0.3/api/v1/perform
 
-install:
-	racetrack plugin install *.zip
+# todo add numbers above
+perform:
+	curl -X POST \
+		"http://localhost:7000/pub/job/tomcat-adder/latest/api/v1/perform" \
+		-H "Content-Type: application/json" \
+		-d '{"numbers": [40, 2]}'
+

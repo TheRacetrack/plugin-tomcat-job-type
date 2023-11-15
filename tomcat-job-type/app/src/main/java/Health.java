@@ -21,18 +21,18 @@ public class Health extends HttpServlet {
 
 		String path = request.getServletPath();
 
-        if (path.equals("/ready")) {
-        	response.getWriter().append("Ready");
-    		response.setStatus(200);
-        } else if (path.equals("/health")) {
-        	response.getWriter().append("Healthy");
-    		response.setStatus(200);
-        } else if (path.equals("/live")) {
-        	response.getWriter().append("Alive");
-    		response.setStatus(200);
-        } else {
-        	response.getWriter().append("Invalid endpoint");
-        	response.setStatus(404);
-        }
+		if (path.equals("/ready")) {
+			response.getWriter().append("Ready");
+			response.setStatus(200);
+		} else if (path.equals("/health")) {
+			response.getWriter().append("Healthy");
+			response.setStatus(200);
+		} else if (path.equals("/live")) {
+			response.getWriter().append("Alive");
+			response.setStatus(200);
+		} else {
+			response.getWriter().append("Invalid endpoint");
+			response.setStatus(404);
+		}
 	}
 }

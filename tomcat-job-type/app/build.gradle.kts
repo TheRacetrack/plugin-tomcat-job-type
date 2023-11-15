@@ -37,7 +37,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("tomcat.job.type.Health")
+    mainClass.set("Health")
 }
 
 tasks.named<Test>("test") {
