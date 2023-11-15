@@ -14,7 +14,8 @@ RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
 # Todo: run gradle builder to get a .war file out of user .java
 
 # Todo: separate Health from Perform servlet
-# health war will serve /health, /live and /ready
+# health war will serve /health, /live and /ready , both on root and on pub/ endpoint.
+# Potential problem is that user war also needs to be run on the same path.
 #ADD health.war "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
 
 # Add the user war file , put it at path which will specify the servlet path, plus at root / for debugging
