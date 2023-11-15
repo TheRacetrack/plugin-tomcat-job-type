@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    war
 }
 
 repositories {
@@ -23,6 +24,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
+
+    compileOnly("org.apache.tomcat:tomcat-servlet-api:10.1.15")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -34,7 +37,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.racetrack.adder.App")
+    mainClass.set("com.racetrack.adder.Health")
 }
 
 tasks.named<Test>("test") {

@@ -22,7 +22,7 @@ bundle:
 	racetrack plugin bundle --plugin-version=${TAG} --out=..
 
 deploy-sample:
-	cd sample/adder && racetrack deploy .
+	cd sample/adder && make build && racetrack deploy .
 
 install:
 	racetrack plugin install *.zip
