@@ -19,12 +19,6 @@ deploy-sample:
 
 test-sample:
 	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
-		http://127.0.0.1:7105/pub/job/tomcat-adder/0.0.3/api/v1/perform
-
-# todo add numbers above
-perform:
-	curl -X POST \
-		"http://localhost:7000/pub/job/tomcat-adder/latest/api/v1/perform" \
 		-H "Content-Type: application/json" \
-		-d '{"numbers": [40, 2]}'
-
+		-d '{"numbers": [40, 2]}' \
+		http://127.0.0.1:7105/pub/job/tomcat-adder/0.0.3/api/v1/perform

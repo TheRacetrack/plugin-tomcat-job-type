@@ -28,7 +28,7 @@ public class Health extends HttpServlet {
 			response.getWriter().append("Healthy");
 			response.setStatus(200);
 		} else if (path.equals("/live")) {
-			response.getWriter().append("Alive");
+			response.getWriter().append('{"deployment_timestamp": 1654779364}'); // todo take from JOB_DEPLOYMENT_TIMESTAMP
 			response.setStatus(200);
 		} else {
 			response.getWriter().append("Invalid endpoint");

@@ -26,6 +26,8 @@ dependencies {
     implementation("com.google.guava:guava:32.1.1-jre")
 
     compileOnly("org.apache.tomcat:tomcat-servlet-api:10.1.15")
+
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
