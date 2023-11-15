@@ -1,5 +1,3 @@
-package com.racetrack.adder;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -28,7 +26,7 @@ public class Health extends HttpServlet {
 			response.getWriter().append("Healthy");
 			response.setStatus(200);
 		} else if (path.equals("/live")) {
-			response.getWriter().append('{"deployment_timestamp": 1654779364}'); // todo take from JOB_DEPLOYMENT_TIMESTAMP
+			response.getWriter().append("{\"deployment_timestamp\": " + System.getenv("JOB_DEPLOYMENT_TIMESTAMP") + "}");
 			response.setStatus(200);
 		} else {
 			response.getWriter().append("Invalid endpoint");

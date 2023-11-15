@@ -39,7 +39,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.racetrack.adder.Health")
+    mainClass.set("Perform")
 }
 
 tasks.named<Test>("test") {
