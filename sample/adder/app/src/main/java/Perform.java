@@ -24,7 +24,8 @@ public class Perform extends HttpServlet {
 		String path = request.getServletPath();
 
 		if (path.equals("/docs_input_example")) {
-			response.getWriter().append("TODO should call user code");
+		    // Return example input values for this model
+			response.getWriter().append("{\"numbers\": [40, 2]}");
 		}
 	}
 
