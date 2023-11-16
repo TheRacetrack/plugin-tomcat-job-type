@@ -3,7 +3,7 @@ WORKDIR /src
 COPY . .
 RUN gradle war
 
-
+#---------------------------
 FROM {{ base_image }}
 
 {% for env_key, env_value in env_vars.items() %}
@@ -20,7 +20,7 @@ RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
 # Add the user war file, put it at path which will specify the servlet path.
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war
 # it will be made available under the demo/v1/myfeature context."
-COPY --from=build /src/"{{ manifest.get_jobtype_extra().entrypoint_path }}" "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}.war"
+COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}.war"
 
 ENV JOB_NAME "{{ manifest.name }}"
 ENV JOB_VERSION "{{ manifest.version }}"

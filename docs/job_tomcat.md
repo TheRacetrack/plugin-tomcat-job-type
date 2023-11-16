@@ -7,18 +7,25 @@ Let's assume you already have your code in a repository at `Adder.java`:
 ```java
 public class Adder {
     public float addTwo(x: float, y: float) {
-        return x + y;
+        sum = x + y
+        return sum
     }
 }
 ```
 
 Now you need to make a few adjustments to adhere to job standards.
-Basically, you need to embed your code into an entrypoint class with `perform` method.
-Create `AddingJob.java`:
+Basically, you need to embed your code into an entrypoint class inheriting from `HttpServlet`, with `doPost` method:
+
 ```java
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+
+class NumbersPayload {
+    public int x;
+    public int y;
+}
 
 public class AddingJob extends HttpServlet {
 
@@ -26,13 +33,34 @@ public class AddingJob extends HttpServlet {
 	    super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        x = request.getReader().Read("x")
-        y = request.getReader().Read("y")
-        response.getWriter().append("Adding result: " + (x+y));
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+	throws ServletException, IOException {
+	
+		NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
+		sum = payload.x + payload.y
+        response.getWriter().append(Integer.toString(sum));
 	}
 ```
 
-This method will be called by Racetrack when calling `/api/v1/perform` endpoint on your job.
+This method will be called by Racetrack when calling `/api/v1/perform` endpoint on your job. You can also support GET
+methods by implementing `doGet`:
 
-Then in manifest, point to this file in `jobtype_extra.entrypoint_path`.
+```java
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String path = request.getServletPath();
+
+		if (path.equals("/foo")) {
+			response.getWriter().append("Bar");
+			response.addHeader("content-type", "text/plain");
+			response.setStatus(200);
+		}
+	}
+```
+
+
+You are expected to use gradle with war plugin, which will build the app to `app/build/libs/app.war` file.
+This file will be hosted by the Tomcat at appropriate endpoints.
+
+For details, take a look at `sample/adder`.

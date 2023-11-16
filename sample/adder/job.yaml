@@ -6,6 +6,3 @@ version: 0.0.3
 git:
   remote: https://github.com/TheRacetrack/plugin-tomcat-job-type
   directory: sample/adder
-
-jobtype_extra:
-  entrypoint_path: 'app/build/libs/app.war'

@@ -3,6 +3,7 @@ WORKDIR /src
 COPY . .
 RUN gradle war
 
+#---------------------------
 FROM tomcat:10.1.15-jre21-temurin
 
 # This war contains Health component, which will serve /health, /live and /ready, on root endpoint.
