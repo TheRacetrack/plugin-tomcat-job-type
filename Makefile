@@ -15,6 +15,7 @@ install:
 	racetrack plugin install *.zip
 
 deploy-sample:
+	racetrack delete tomcat-adder --version 0.0.3
 	cd sample/adder && make build && racetrack deploy .
 
 test-sample:

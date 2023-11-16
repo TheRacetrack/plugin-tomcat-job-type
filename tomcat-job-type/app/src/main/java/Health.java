@@ -22,9 +22,11 @@ public class Health extends HttpServlet {
 		if (path.equals("/ready")) {
 			response.getWriter().append("Ready");
 			response.setStatus(200);
+
 		} else if (path.equals("/health")) {
 			response.getWriter().append("Healthy");
 			response.setStatus(200);
+
 		} else if (path.equals("/live")) {
 			response.getWriter().append("{\"deployment_timestamp\": " + System.getenv("JOB_DEPLOYMENT_TIMESTAMP") + "}");
 			response.setStatus(200);
