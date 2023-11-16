@@ -15,8 +15,8 @@ install:
 	racetrack plugin install *.zip
 
 deploy-sample:
-	racetrack delete tomcat-adder --version 0.0.3
-	cd sample/adder && make build && racetrack deploy .
+	-racetrack delete tomcat-adder --version 0.0.3
+	cd sample/adder && racetrack deploy .
 
 test-sample:
 	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
