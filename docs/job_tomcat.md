@@ -2,6 +2,11 @@
 
 Set `lang: tomcat:latest` in your `job.yaml` manifest file in order to use this type of job.
 
+Under the hood it is using gradle with `war` plugin, which will build your code to `app/build/libs/app.war` file.
+This file will be hosted by the Tomcat at appropriate endpoints.
+
+The best way to create your own job, is to copy the `sample` folder and start making changes.
+
 ## Job standards
 Let's assume you already have your code in a repository at `Adder.java`:
 ```java
@@ -59,8 +64,5 @@ methods by implementing `doGet`:
 	}
 ```
 
-
-You are expected to use gradle with war plugin, which will build the app to `app/build/libs/app.war` file.
-This file will be hosted by the Tomcat at appropriate endpoints.
 
 For details, take a look at `sample/adder`.

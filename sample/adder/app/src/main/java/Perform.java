@@ -28,14 +28,14 @@ public class Perform extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getServletPath();
 
-        if (path.equals("/perform")) {
-            NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
+		if (path.equals("/perform")) {
+			NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
 
-            int sum = 0;
-            for (int number : payload.numbers) {
-                sum += number;
-            }
-            response.getWriter().append(Integer.toString(sum));
+			int sum = 0;
+			for (int number : payload.numbers) {
+				sum += number;
+			}
+			response.getWriter().append(Integer.toString(sum));
 		}
 	}
 
