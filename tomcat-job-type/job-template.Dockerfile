@@ -10,12 +10,14 @@ FROM {{ base_image }}
 ENV {{ env_key }} "{{ env_value }}"
 {% endfor %}
 
+RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
+
+
 {% if manifest.system_dependencies and manifest.system_dependencies|length > 0 %}
 RUN apk add \
     {{ manifest.system_dependencies | join(' ') }}
 {% endif %}
 
-RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
 
 # Add the user war file, put it at path which will specify the servlet path.
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war

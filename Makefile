@@ -1,4 +1,3 @@
-TAG ?= 0.0.2
 
 build:
 	cd tomcat-job-type &&\
@@ -8,15 +7,13 @@ build:
 
 bundle:
 	cd tomcat-job-type && \
-	make build && \
-	racetrack plugin bundle --plugin-version=${TAG} --out=..
+	racetrack plugin bundle --out=..
 
 install:
 	racetrack plugin install *.zip
 
 deploy-sample:
-	-racetrack delete tomcat-adder --version 0.0.3
-	cd sample/adder && racetrack deploy .
+	racetrack deploy sample/adder --force
 
 test-sample:
 	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
