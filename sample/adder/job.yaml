@@ -1,7 +1,7 @@
 name: tomcat-adder
 owner_email: sample@example.com
 jobtype: tomcat:latest
-version: 0.0.3
+version: 1.0.0
 
 git:
   remote: https://github.com/TheRacetrack/plugin-tomcat-job-type

@@ -1,4 +1,4 @@
-FROM gradle:jdk21 as build
+FROM gradle:8.4.0-jdk21 as build
 WORKDIR /src
 COPY . .
 RUN gradle war

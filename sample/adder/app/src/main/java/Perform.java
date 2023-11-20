@@ -7,7 +7,7 @@ import java.io.IOException;
 import com.google.gson.Gson;
 
 class NumbersPayload {
-    public int numbers[];
+	public int numbers[];
 }
 
 @WebServlet(urlPatterns = {"/api/v1/perform", "/docs_input_example"})
@@ -20,7 +20,7 @@ public class Perform extends HttpServlet {
 		String path = request.getServletPath();
 
 		if (path.equals("/docs_input_example")) {
-		    // Return example input values for this model
+			// Return example input values for this model
 			response.getWriter().append("{\"numbers\": [40, 2]}");
 		}
 	}
@@ -29,11 +29,11 @@ public class Perform extends HttpServlet {
 
 		NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
 
-        int sum = 0;
-        for (int number : payload.numbers) {
-            sum += number;
-        }
-        response.getWriter().append(Integer.toString(sum));
+		int sum = 0;
+		for (int number : payload.numbers) {
+			sum += number;
+		}
+		response.getWriter().append(Integer.toString(sum));
 	}
 
 }
