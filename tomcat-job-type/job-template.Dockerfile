@@ -24,6 +24,8 @@ RUN apk add \
 # it will be made available under the demo/v1/myfeature context."
 COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}.war"
 
+RUN cp -r "${CATALINA_HOME}/webapps/swagger-ui/" "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}#swagger-ui/"
+
 ENV JOB_NAME "{{ manifest.name }}"
 ENV JOB_VERSION "{{ manifest.version }}"
 ENV GIT_VERSION "{{ git_version }}"
