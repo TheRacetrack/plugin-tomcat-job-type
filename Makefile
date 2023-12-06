@@ -19,4 +19,4 @@ test-sample:
 	curl -X POST -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
 		-H "Content-Type: application/json" \
 		-d '{"numbers": [40, 2]}' \
-		$(shell racetrack get pub)/job/tomcat-adder/latest/api/v1/perform
+		$(shell racetrack get pub -q)/job/tomcat-adder/latest/api/v1/perform

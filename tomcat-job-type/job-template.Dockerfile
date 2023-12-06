@@ -10,6 +10,8 @@ FROM {{ base_image }}
 ENV {{ env_key }} "{{ env_value }}"
 {% endfor %}
 
+RUN apt update && apt install -y unzip
+
 RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
 
 
@@ -19,12 +21,21 @@ RUN apk add \
 {% endif %}
 
 
-# Add the user war file, put it at path which will specify the servlet path.
+COPY --from=build /src/app/build/libs/app.war /tmp/app.war
+
+# Take the user war file, put it at path which will specify the servlet path.
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war
 # it will be made available under the demo/v1/myfeature context."
-COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}.war"
+# This time we have to unzip it manually, so that the folder is ready for the addition of swagger files.
+RUN unzip /tmp/app.war -d "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
 
-RUN cp -r "${CATALINA_HOME}/webapps/swagger-ui/" "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}#swagger-ui/"
+# Swagger files are served from the same path.
+RUN cp -rv ${CATALINA_HOME}/webapps/swagger-ui/* "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
+
+# Put the root.war under public url so that /swagger endpoint of Swagger servlet can be accessed by swagger-ui, and point it.
+RUN unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
+RUN sed -i 's/job_name/{{ manifest.name }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js"
+RUN sed -i 's/job_version/{{ manifest.version }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js"
 
 ENV JOB_NAME "{{ manifest.name }}"
 ENV JOB_VERSION "{{ manifest.version }}"
