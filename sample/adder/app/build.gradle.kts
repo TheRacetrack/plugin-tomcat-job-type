@@ -40,7 +40,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("Perform")
+    mainClass.set("Job")
 }
 
 tasks.named<Test>("test") {

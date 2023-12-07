@@ -1,6 +1,6 @@
 name: tomcat-adder
 owner_email: sample@example.com
-jobtype: tomcat:latest
+jobtype: tomcat10-jdk17:latest
 version: 1.0.0
 
 git:
