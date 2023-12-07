@@ -32,9 +32,9 @@ class NumbersPayload {
     public int y;
 }
 
-public class AddingJob extends HttpServlet {
+public class Job extends HttpServlet {
 
-	public AddingJob() {
+	public Job() {
 	    super();
 	}
 
@@ -64,5 +64,23 @@ methods by implementing `doGet`:
 	}
 ```
 
+By default, you are expected to name the class `Job`, and the file as `Job.java`. 
+If you need a different one, adjust this section in `build.gradle.kts`:
+```
+application {
+    // Define the main class for the application.
+    mainClass.set("Job")
+}
+```
+
 
 For details, take a look at `sample/adder`.
+
+## Swagger UI
+
+When you access the root url of a job (ie. by clicking on it in Racetrack Dashboard), you will be presented with
+Swagger UI, which simplifies calling of various urls.
+
+Unfortunately currently Swagger doesn't detect available urls, and its hardcoded on base ones like /health,
+and /api/v1/perform.
+
