@@ -33,9 +33,9 @@ RUN unzip /tmp/app.war -d "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#
 RUN cp -rv ${CATALINA_HOME}/webapps/swagger-ui/* "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
 
 # Put the root.war under public url so that /swagger endpoint of Swagger servlet can be accessed by swagger-ui, and point it.
-RUN unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/"
-RUN sed -i 's/job_name/{{ manifest.name }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js"
-RUN sed -i 's/job_version/{{ manifest.version }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js"
+RUN unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/" && \
+    sed -i 's/job_name/{{ manifest.name }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js" && \
+    sed -i 's/job_version/{{ manifest.version }}/' "${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}/swagger-initializer.js"
 
 ENV JOB_NAME "{{ manifest.name }}"
 ENV JOB_VERSION "{{ manifest.version }}"
