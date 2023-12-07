@@ -8,13 +8,13 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/openapi.yaml"})
 public class Swagger extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private String swagger_template;
-	private String swagger;
+    private static final long serialVersionUID = 1L;
+    private String swagger_template;
+    private String swagger;
 
-	public Swagger() {
-		super();
-		this.swagger_template = """
+    public Swagger() {
+        super();
+        this.swagger_template = """
         openapi: 3.0.0
         info:
           title: Job
@@ -151,19 +151,19 @@ public class Swagger extends HttpServlet {
 
         this.swagger = this.swagger_template.replaceAll("JOB_NAME", JobName);
         this.swagger = this.swagger.replaceAll("JOB_VERSION", JobVersion);
-	}
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		String path = request.getServletPath();
+        String path = request.getServletPath();
 
-		if (path.equals("/openapi.yaml")) {
-			response.getWriter().append(this.swagger);
-			response.setStatus(200);
-		} else {
-			response.getWriter().append("Invalid endpoint");
-			response.setStatus(404);
-		}
-	}
+        if (path.equals("/openapi.yaml")) {
+            response.getWriter().append(this.swagger);
+            response.setStatus(200);
+        } else {
+            response.getWriter().append("Invalid endpoint");
+            response.setStatus(404);
+        }
+    }
 }

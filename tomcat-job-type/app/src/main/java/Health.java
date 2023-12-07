@@ -8,32 +8,32 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/ready", "/live", "/health"})
 public class Health extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public Health() {
-		super();
-	}
+    public Health() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		String path = request.getServletPath();
+        String path = request.getServletPath();
 
-		if (path.equals("/ready")) {
-			response.getWriter().append("Ready");
-			response.setStatus(200);
+        if (path.equals("/ready")) {
+            response.getWriter().append("Ready");
+            response.setStatus(200);
 
-		} else if (path.equals("/health")) {
-			response.getWriter().append("Healthy");
-			response.setStatus(200);
+        } else if (path.equals("/health")) {
+            response.getWriter().append("Healthy");
+            response.setStatus(200);
 
-		} else if (path.equals("/live")) {
-			response.getWriter().append("{\"deployment_timestamp\": " + System.getenv("JOB_DEPLOYMENT_TIMESTAMP") + "}");
-			response.addHeader("content-type", "application/json");
-			response.setStatus(200);
-		} else {
-			response.getWriter().append("Invalid endpoint");
-			response.setStatus(404);
-		}
-	}
+        } else if (path.equals("/live")) {
+            response.getWriter().append("{\"deployment_timestamp\": " + System.getenv("JOB_DEPLOYMENT_TIMESTAMP") + "}");
+            response.addHeader("content-type", "application/json");
+            response.setStatus(200);
+        } else {
+            response.getWriter().append("Invalid endpoint");
+            response.setStatus(404);
+        }
+    }
 }
