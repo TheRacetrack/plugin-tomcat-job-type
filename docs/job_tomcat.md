@@ -84,3 +84,7 @@ Swagger UI, which simplifies calling of various urls.
 Unfortunately currently Swagger doesn't detect available urls, and its hardcoded on base ones like /health,
 and /api/v1/perform.
 
+## Logging
+
+For logging you can use the standard `java.util.logging.Logger` package. By default, it logs only WARNING, INFO and
+SEVERE levels.
