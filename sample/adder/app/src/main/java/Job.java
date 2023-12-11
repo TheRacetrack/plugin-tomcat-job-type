@@ -32,9 +32,7 @@ public class Job extends HttpServlet {
         LOGGER.severe("Logging an SEVERE-level message");
         LOGGER.info("Logging an INFO-level message");
         LOGGER.warning("Logging an WARNING-level message");
-        LOGGER.fine("Logging an FINE-level message");
-        LOGGER.finer("Logging an FINER-level message");
-        LOGGER.finest("Logging an FINEST-level message");
+        // With deafult logging config, levels below WARNING don't print
 
         NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
 
