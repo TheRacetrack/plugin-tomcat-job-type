@@ -8,6 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Swagger-UI is displayed on a main url of job.
 
-## [0.0.1] - 2023-11-17
+## [1.0.0] - 2023-11-20
 ### Added
 - First working version.

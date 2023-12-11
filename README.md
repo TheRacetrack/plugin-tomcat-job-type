@@ -13,7 +13,7 @@ A plugin for Racetrack which extends it with Tomcat (Java) Job Type. Used stack:
 ## Usage
 You can deploy sample Tomcat job by running:
 ```bash
-racetrack deploy sample/sample
+racetrack deploy sample/adder
 ```
 
 You are expected to have a .java file with class that overrides few methods. For details, see `docs/job_tomcat.md`
