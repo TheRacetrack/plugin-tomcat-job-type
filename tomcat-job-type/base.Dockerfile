@@ -17,7 +17,7 @@ COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/ROOT.war
 COPY ./swagger-ui/ "${CATALINA_HOME}/webapps/swagger-ui/"
 
 # todo put it into ROOT so that /metrics is served as Prometheus expects.
-COPY --from=build /src/prometheus/build/libs/prometheus.war "${CATALINA_HOME}/webapps/"
+COPY --from=build /src/prometheus/build/libs/prometheus.war "${CATALINA_HOME}/webapps/prometheus.war"
 
 
 LABEL racetrack-component="job"
