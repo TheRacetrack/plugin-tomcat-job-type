@@ -23,6 +23,7 @@ RUN apk add \
 
 COPY --from=build /src/app/build/libs/app.war /tmp/app.war
 ENV JOB_FOLDER="${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}"
+ENV ROOT_FOLDER="${CATALINA_HOME}/webapps/ROOT"
 
 # Take the user war file, put it at path which will specify the servlet path.
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war
@@ -36,9 +37,13 @@ RUN cp -rv ${CATALINA_HOME}/webapps/swagger-ui/* "$JOB_FOLDER"
 # Put the root.war under public url so that /swagger endpoint of Swagger servlet can be accessed by swagger-ui.
 RUN unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "$JOB_FOLDER" && \
     sed -i 's/job_name/{{ manifest.name }}/' "$JOB_FOLDER/swagger-initializer.js" && \
-    sed -i 's/job_version/{{ manifest.version }}/' "$JOB_FOLDER/swagger-initializer.js"
+    sed -i 's/job_version/{{ manifest.version }}/' "$JOB_FOLDER/swagger-initializer.js" && \
+    unzip -o "${CATALINA_HOME}/webapps/prometheus.war" -d "$JOB_FOLDER"
 
-RUN unzip -o "${CATALINA_HOME}/webapps/prometheus.war" -d "$JOB_FOLDER"
+# These servlets also have to be served at root endpoint.
+RUN unzip -n "${CATALINA_HOME}/webapps/prometheus.war" -d "$ROOT_FOLDER" && \
+    unzip -n "${CATALINA_HOME}/webapps/ROOT.war" -d "$ROOT_FOLDER" && \
+    unzip -n /tmp/app.war -d "$ROOT_FOLDER"
 
 ENV JOB_NAME "{{ manifest.name }}"
 ENV JOB_VERSION "{{ manifest.version }}"

@@ -74,7 +74,8 @@ application {
 ```
 
 
-For details, take a look at `sample/adder`.
+For details, take a look at `sample/adder`. It contains also examples of usage of Swagger, logging and 
+Prometheus metrics.
 
 ## Swagger UI
 
@@ -88,3 +89,18 @@ and /api/v1/perform.
 
 For logging you can use the standard `java.util.logging.Logger` package. By default, it logs only WARNING, INFO and
 SEVERE levels.
+
+
+## Prometheus metrics
+
+You can define all types of metrics in your class, but define them as `static final` - otherwise they will
+be recreated everytime servlet is called. For example:
+```java
+    private static final Counter counter = Counter.builder().name("my_count_total")
+                                                            .help("example counter")
+                                                            .labelNames("status")
+                                                            .register();
+```
+
+You also need to add `implementation("io.prometheus:prometheus-metrics-core:1.0.0")` in `dependencies` of 
+your `build.gradle.kts` file.

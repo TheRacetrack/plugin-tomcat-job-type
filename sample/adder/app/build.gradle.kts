@@ -20,15 +20,10 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
-
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    // This dependency is used by the application.
-    implementation("com.google.guava:guava:32.1.1-jre")
-
     compileOnly("org.apache.tomcat:tomcat-servlet-api:10.1.15")
-
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("io.prometheus:prometheus-metrics-core:1.0.0")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

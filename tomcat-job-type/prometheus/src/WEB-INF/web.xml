@@ -15,6 +15,13 @@
 -->
 
 <web-app>
+
+<servlet>
+    <servlet-name>prometheus-initialization</servlet-name>
+    <servlet-class>Prometheus</servlet-class>
+    <load-on-startup>0</load-on-startup>
+</servlet>
+
 <servlet>
     <servlet-name>prometheus-metrics</servlet-name>
     <servlet-class>io.prometheus.metrics.exporter.servlet.jakarta.PrometheusMetricsServlet</servlet-class>
@@ -23,4 +30,5 @@
     <servlet-name>prometheus-metrics</servlet-name>
     <url-pattern>/metrics</url-pattern>
 </servlet-mapping>
+
 </web-app>
