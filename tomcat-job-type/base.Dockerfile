@@ -17,7 +17,7 @@ COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/ROOT.war
 COPY --from=build /src/prometheus/build/libs/prometheus.war "${CATALINA_HOME}/webapps/prometheus.war"
 
 COPY --from=build /src/prometheus/build/classes/java/main/Valve.class "${CATALINA_HOME}/lib/"
-
+COPY --from=build /src/prometheus/build/classes/java/main/Prometheus.class "${CATALINA_HOME}/lib/"
 COPY --from=build /src/prometheus/build/customDirectory/* "${CATALINA_HOME}/lib/"
 
 # It won't run from this folder, but we need it in image, so that job-template can put it

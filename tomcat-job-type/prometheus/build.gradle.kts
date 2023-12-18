@@ -42,6 +42,7 @@ tasks.war {
     // Specify contents to be included in the WAR file
     from("src") {
         include("WEB-INF/web.xml")
+        include("META-INF/context.xml")
     }
 }
 

@@ -1,0 +1,11 @@
+
+<Context>
+
+<Resource name="bean/PrometheusRegistry"
+          auth="Container"
+          type="io.prometheus.metrics.model.registry.PrometheusRegistry"
+          description=""
+          factory="Prometheus"
+          singleton="true" />
+
+</Context>

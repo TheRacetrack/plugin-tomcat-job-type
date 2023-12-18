@@ -16,19 +16,21 @@
 
 <web-app>
 
-<servlet>
-    <servlet-name>prometheus-initialization</servlet-name>
-    <servlet-class>Prometheus</servlet-class>
-    <load-on-startup>0</load-on-startup>
-</servlet>
+    <servlet>
+        <servlet-name>prometheus-metrics</servlet-name>
+        <servlet-class>io.prometheus.metrics.exporter.servlet.jakarta.PrometheusMetricsServlet</servlet-class>
+    </servlet>
 
-<servlet>
-    <servlet-name>prometheus-metrics</servlet-name>
-    <servlet-class>io.prometheus.metrics.exporter.servlet.jakarta.PrometheusMetricsServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-    <servlet-name>prometheus-metrics</servlet-name>
-    <url-pattern>/metrics</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>prometheus-metrics</servlet-name>
+        <url-pattern>/metrics</url-pattern>
+    </servlet-mapping>
+
+    <resource-env-ref>
+        <description>Reference to the Prometheus CollectorRegistry</description>
+        <resource-env-ref-name>bean/PrometheusRegistry</resource-env-ref-name>
+        <resource-env-ref-type>io.prometheus.metrics.model.registry.PrometheusRegistry</resource-env-ref-type>
+    </resource-env-ref>
+
 
 </web-app>
