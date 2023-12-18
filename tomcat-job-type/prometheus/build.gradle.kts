@@ -10,8 +10,11 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     compileOnly("org.apache.tomcat:tomcat-servlet-api:10.1.15")
+    implementation("org.apache.tomcat:tomcat-catalina:10.1.15")
 
     implementation("io.prometheus:prometheus-metrics-core:1.0.0")
+    implementation("io.prometheus:prometheus-metrics-model:1.0.0")
+    implementation("io.prometheus:prometheus-metrics-config:1.0.0")
     implementation("io.prometheus:prometheus-metrics-instrumentation-jvm:1.0.0")
     implementation("io.prometheus:prometheus-metrics-exporter-servlet-jakarta:1.0.0")
 }
@@ -46,3 +49,28 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+// Configure source sets
+sourceSets {
+    val main by getting {
+        // Define a new output directory for the specific dependency
+        output.dir("build/customDirectory")
+    }
+}
+
+// Create a custom task to copy the dependency classes to the specific directory
+tasks.register("copyPrometheusClasses1", Copy::class) {
+    from(configurations.compileClasspath.get().filter { it.name == "prometheus-metrics-core-1.0.0.jar" }.singleFile)
+    into("build/customDirectory")
+}
+
+tasks.register("copyPrometheusClasses2", Copy::class) {
+    from(configurations.compileClasspath.get().filter { it.name == "prometheus-metrics-config-1.0.0.jar" }.singleFile)
+    into("build/customDirectory")
+}
+
+tasks.register("copyPrometheusClasses3", Copy::class) {
+    from(configurations.compileClasspath.get().filter { it.name == "prometheus-metrics-model-1.0.0.jar" }.singleFile)
+    into("build/customDirectory")
+}
+
