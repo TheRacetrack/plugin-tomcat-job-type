@@ -12,14 +12,10 @@ ENV {{ env_key }} "{{ env_value }}"
 
 RUN apt update && apt install -y unzip
 
-RUN sed -i 's/port="8080"/port="7000"/' ${CATALINA_HOME}/conf/server.xml
-
-
 {% if manifest.system_dependencies and manifest.system_dependencies|length > 0 %}
 RUN apk add \
     {{ manifest.system_dependencies | join(' ') }}
 {% endif %}
-
 
 COPY --from=build /src/app/build/libs/app.war /tmp/app.war
 ENV JOB_FOLDER="${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}"
@@ -29,20 +25,17 @@ ENV ROOT_FOLDER="${CATALINA_HOME}/webapps/ROOT"
 # Quoting Tomcat doc: "Contexts can be multiple levels deep, so if you deploy a WAR file called demo#v1#myfeature.war
 # it will be made available under the demo/v1/myfeature context."
 # This time we have to unzip it manually, so that the folder is ready for the addition of swagger files.
-RUN unzip /tmp/app.war -d "$JOB_FOLDER"
-
-# Swagger files are served from the same path.
-RUN cp -rv ${CATALINA_HOME}/webapps/swagger-ui/* "$JOB_FOLDER"
-
-# Put the root.war under public url so that /swagger endpoint of Swagger servlet can be accessed by swagger-ui.
-RUN unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "$JOB_FOLDER" && \
+# Swagger and prometheus metrics are also served from the same path.
+RUN unzip /tmp/app.war -d "$JOB_FOLDER" && \
+    unzip -o "${CATALINA_HOME}/webapps/ROOT.war" -d "$JOB_FOLDER" && \
+    unzip -o "${CATALINA_HOME}/webapps/prometheus.war" -d "$JOB_FOLDER" && \
+    cp -rv ${CATALINA_HOME}/webapps/swagger-ui/* "$JOB_FOLDER" && \
     sed -i 's/job_name/{{ manifest.name }}/' "$JOB_FOLDER/swagger-initializer.js" && \
-    sed -i 's/job_version/{{ manifest.version }}/' "$JOB_FOLDER/swagger-initializer.js" && \
-    unzip -o "${CATALINA_HOME}/webapps/prometheus.war" -d "$JOB_FOLDER"
+    sed -i 's/job_version/{{ manifest.version }}/' "$JOB_FOLDER/swagger-initializer.js"
 
 # These servlets also have to be served at root endpoint.
-RUN unzip -n "${CATALINA_HOME}/webapps/prometheus.war" -d "$ROOT_FOLDER" && \
-    unzip -n "${CATALINA_HOME}/webapps/ROOT.war" -d "$ROOT_FOLDER" && \
+RUN unzip -n "${CATALINA_HOME}/webapps/ROOT.war" -d "$ROOT_FOLDER" && \
+    unzip -n "${CATALINA_HOME}/webapps/prometheus.war" -d "$ROOT_FOLDER" && \
     unzip -n /tmp/app.war -d "$ROOT_FOLDER"
 
 ENV JOB_NAME "{{ manifest.name }}"

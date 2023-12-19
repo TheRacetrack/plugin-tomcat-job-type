@@ -102,5 +102,7 @@ be recreated everytime servlet is called. For example:
                                                             .register();
 ```
 
+They will be visible in the `/pub/job/{job_name}/{job_version}/metrics` endpoint, but not in the `/metrics`.
+
 You also need to add `implementation("io.prometheus:prometheus-metrics-core:1.0.0")` in `dependencies` of 
 your `build.gradle.kts` file.
