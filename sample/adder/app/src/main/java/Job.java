@@ -7,10 +7,6 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import java.util.logging.Logger;
 import io.prometheus.metrics.core.metrics.Counter;
-import javax.naming.InitialContext;
-import javax.naming.Context;
-import io.prometheus.metrics.model.registry.PrometheusRegistry;
-import javax.naming.NamingException;
 
 class NumbersPayload {
     public int numbers[];
@@ -21,21 +17,10 @@ public class Job extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger( Job.class.getName() );
 
-    private static Counter counter = null;
-
-    static {
-        try {
-            Context envCtx = (Context) new InitialContext().lookup("java:comp/env");
-            PrometheusRegistry defaultReg = (PrometheusRegistry) envCtx.lookup("bean/PrometheusRegistry");
-
-            counter = Counter.builder().name("my_count_total")
-                .help("example counter")
-                .labelNames("status").register((PrometheusRegistry)defaultReg);
-        } catch (NamingException e) {
-            e.printStackTrace();
-            // Provide a default counter instance or handle the situation appropriately
-        }
-    }
+    private static final Counter counter = Counter.builder().name("my_count_total")
+                                                            .help("example counter")
+                                                            .labelNames("status")
+                                                            .register();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,11 +40,9 @@ public class Job extends HttpServlet {
         LOGGER.warning("Logging an WARNING-level message");
         // With default logging config, levels below WARNING don't print
 
-        if (this.counter != null) {
-            this.counter.labelValues("ok").inc();
-            this.counter.labelValues("ok").inc();
-            this.counter.labelValues("error").inc();
-        }
+        this.counter.labelValues("ok").inc();
+        this.counter.labelValues("ok").inc();
+        this.counter.labelValues("error").inc();
 
         NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
 

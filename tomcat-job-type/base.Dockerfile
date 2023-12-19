@@ -3,7 +3,7 @@ WORKDIR /src
 COPY ./app ./app
 COPY ./prometheus ./prometheus
 COPY settings.gradle.kts ./
-RUN gradle war && gradle :prometheus:copyPrometheusClasses1 && gradle :prometheus:copyPrometheusClasses2 && gradle :prometheus:copyPrometheusClasses3
+RUN gradle war
 
 
 #---------------------------
@@ -15,10 +15,6 @@ COPY server.xml "${CATALINA_HOME}/conf/server.xml"
 COPY --from=build /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/ROOT.war"
 
 COPY --from=build /src/prometheus/build/libs/prometheus.war "${CATALINA_HOME}/webapps/prometheus.war"
-
-COPY --from=build /src/prometheus/build/classes/java/main/Valve.class "${CATALINA_HOME}/lib/"
-COPY --from=build /src/prometheus/build/classes/java/main/Prometheus.class "${CATALINA_HOME}/lib/"
-COPY --from=build /src/prometheus/build/customDirectory/* "${CATALINA_HOME}/lib/"
 
 # It won't run from this folder, but we need it in image, so that job-template can put it
 # in appropriate place, once it knows the manifest.name

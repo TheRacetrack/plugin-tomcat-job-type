@@ -1,19 +1,22 @@
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.spi.ObjectFactory;
-import java.util.Hashtable;
-import javax.naming.Name;
-import io.prometheus.metrics.model.registry.PrometheusRegistry;
-// import io.prometheus.metrics.instrumentation.jvm.JvmMetrics;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import io.prometheus.metrics.instrumentation.jvm.JvmMetrics;
+import java.util.logging.Logger;
 
-public class Prometheus implements ObjectFactory {
 
-	public Object getObjectInstance(Object obj, Name name2, Context nameCtx, Hashtable environment)
-		      throws NamingException {
+public class Prometheus extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger( Prometheus.class.getName() );
 
-// 		JvmMetrics.builder().register(PrometheusRegistry.defaultRegistry);
+    public Prometheus() {
+        super();
+        LOGGER.info("Registering JVM Prometheus metrics");
+        JvmMetrics.builder().register();
 
-        return PrometheusRegistry.defaultRegistry;
     }
 
 }
