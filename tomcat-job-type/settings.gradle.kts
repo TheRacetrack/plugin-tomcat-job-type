@@ -12,3 +12,4 @@ plugins {
 
 rootProject.name = "tomcat-job-type"
 include("app")
+include("prometheus")

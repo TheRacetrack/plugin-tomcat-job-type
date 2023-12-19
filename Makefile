@@ -20,3 +20,7 @@ test-sample:
 		-H "Content-Type: application/json" \
 		-d '{"numbers": [40, 2]}' \
 		$(shell racetrack get pub -q)/job/tomcat-adder/latest/api/v1/perform
+
+test-metrics:
+	curl -H "X-Racetrack-Auth: $(shell racetrack get auth-token)" \
+		$(shell racetrack get pub -q)/job/tomcat-adder/latest/metrics

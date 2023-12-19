@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import com.google.gson.Gson;
 import java.util.logging.Logger;
+import io.prometheus.metrics.core.metrics.Counter;
 
 class NumbersPayload {
     public int numbers[];
@@ -15,6 +16,11 @@ class NumbersPayload {
 public class Job extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger( Job.class.getName() );
+
+    private static final Counter counter = Counter.builder().name("my_count_total")
+                                                            .help("example counter")
+                                                            .labelNames("status")
+                                                            .register();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,7 +38,11 @@ public class Job extends HttpServlet {
         LOGGER.severe("Logging an SEVERE-level message");
         LOGGER.info("Logging an INFO-level message");
         LOGGER.warning("Logging an WARNING-level message");
-        // With deafult logging config, levels below WARNING don't print
+        // With default logging config, levels below WARNING don't print
+
+        this.counter.labelValues("ok").inc();
+        this.counter.labelValues("ok").inc();
+        this.counter.labelValues("error").inc();
 
         NumbersPayload payload = new Gson().fromJson(request.getReader(), NumbersPayload.class);
 
