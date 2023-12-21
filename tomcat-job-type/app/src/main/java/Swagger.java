@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(urlPatterns = {"/openapi.yaml"})
 public class Swagger extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private String swagger_template;

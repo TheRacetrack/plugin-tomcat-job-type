@@ -34,15 +34,6 @@ application {
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-    // Needed to create a war file for Tomcat.
-    war
-}
-
-tasks.war {
-    // Specify contents to be included in the WAR file
-    from("src") {
-        include("WEB-INF/web.xml")
-    }
 }
 
 tasks.named<Test>("test") {
