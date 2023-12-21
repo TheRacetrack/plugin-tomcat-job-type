@@ -36,13 +36,6 @@ plugins {
     application
 }
 
-tasks.war {
-    // Specify contents to be included in the WAR file
-    from("src") {
-        include("WEB-INF/web.xml")
-    }
-}
-
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()

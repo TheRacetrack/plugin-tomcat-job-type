@@ -29,6 +29,6 @@ COPY --from=build /src/app/build/libs/app.jar ./
 # Now there are two Tomcat embedded servers, one in app.jar, one in base.jar
 # If they could be run together, that would be best.
 # However I'm afraid that the base sources and user sources will need to be copied in single place,
-# where they will form single codebase, and only then, after compiling with gradle
+# where they will form single codebase, and only then, after compiling with gradle, form single Tomcat server.
 
 CMD ["java", "-cp", "app.jar", "Main"]
