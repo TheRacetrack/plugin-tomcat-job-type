@@ -34,8 +34,6 @@ application {
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
-    // Needed to create a war file for Tomcat.
-    war
 }
 
 tasks.war {
