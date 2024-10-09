@@ -1,10 +1,31 @@
-FROM gradle:8.4.0-jdk21 as build
+FROM gradle:8.4.0-jdk21 as build-base
+WORKDIR /src
+COPY --from=jobtype ./app ./app
+COPY --from=jobtype ./prometheus ./prometheus
+COPY --from=jobtype settings.gradle.kts ./
+RUN gradle war
+
+#---------------------------
+FROM gradle:8.4.0-jdk21 as build-job
 WORKDIR /src
 COPY . .
 RUN gradle war
 
 #---------------------------
-FROM {{ base_image }}
+FROM tomcat:10.1.15-jre21-temurin
+
+COPY --from=jobtype server.xml "${CATALINA_HOME}/conf/server.xml"
+
+# This war contains Health component, which will serve /health, /live and /ready, on root endpoint.
+COPY --from=build-base /src/app/build/libs/app.war "${CATALINA_HOME}/webapps/ROOT.war"
+
+COPY --from=build-base /src/prometheus/build/libs/prometheus.war "${CATALINA_HOME}/webapps/prometheus.war"
+
+# It won't run from this folder, but we need it in image, so that job-template can put it
+# in appropriate place, once it knows the manifest.name
+COPY --from=jobtype ./swagger-ui/ "${CATALINA_HOME}/webapps/swagger-ui/"
+
+LABEL racetrack-component="job"
 
 {% for env_key, env_value in env_vars.items() %}
 ENV {{ env_key }} "{{ env_value }}"
@@ -17,7 +38,7 @@ RUN apk add \
     {{ manifest.system_dependencies | join(' ') }}
 {% endif %}
 
-COPY --from=build /src/app/build/libs/app.war /tmp/app.war
+COPY --from=build-job /src/app/build/libs/app.war /tmp/app.war
 ENV JOB_FOLDER="${CATALINA_HOME}/webapps/pub#job#{{ manifest.name }}#{{ manifest.version }}"
 ENV ROOT_FOLDER="${CATALINA_HOME}/webapps/ROOT"
 
@@ -45,3 +66,5 @@ ENV DEPLOYED_BY_RACETRACK_VERSION "{{ deployed_by_racetrack_version }}"
 ENV JOB_TYPE_VERSION "{{ job_type_version }}"
 
 # The CMD for this image is specified in base tomcat image. It is sth like CMD ["catalina.sh", "run"]
+RUN mkdir -p /usr/local/tomcat/conf/Catalina/localhost && chmod 777 /usr/local/tomcat /usr/local/tomcat/webapps && useradd --create-home --uid 100000 job
+USER 100000
